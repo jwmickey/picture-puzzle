@@ -24,7 +24,7 @@ export default class App extends Component {
         };
     }
 
-    start(gridSize, preset, customUrl) {
+    start(gridSize, preset) {
         let puzzle = this.state.puzzle;
         puzzle.gridSize = gridSize;
         puzzle.gridSqrt = Math.sqrt(puzzle.gridSize);
@@ -42,42 +42,69 @@ export default class App extends Component {
         if (this.state.inProgress) {
             return <Puzzle {...this.state.puzzle} />;
         } else {
-            return <Start images={images} sizes={GRID_SIZES} start={this.start.bind(this)} />
+            return (
+                <Start images={images} sizes={GRID_SIZES} start={this.start.bind(this)}
+                    gridSize={this.state.puzzle.gridSize} />
+            );
         }
     }
 }
 
 class Start extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            gridSize: props.gridSize,
+            imageIndex: 0
+        };
+    }
+
     handleSubmit(e) {
         e.preventDefault();
 
         this.props.start(
-            this.refs.gridSize.getDOMNode().value,
-            this.refs.imagePreset.getDOMNode().value,
-            this.refs.image.getDOMNode().value
+            this.state.gridSize,
+            this.props.images[this.state.imageIndex]
         );
     }
 
+    selectGridSize(size) {
+        this.setState({
+            gridSize: size
+        });
+    }
+
+    selectImage(index) {
+        this.setState({
+            imageIndex: index
+        });
+    }
+
     render() {
+        var that = this;
         return (
-            <form onSubmit={this.handleSubmit.bind(this)}>
-                <label htmlFor="gridSize">Tile Size</label>
-                <select ref="gridSize" id="gridSize">
+            <div className="start">
+                <div className="button-group">
+                    <h3>Number of Tiles</h3>
                     {this.props.sizes.map(function(size) {
-                        return <option key={size} value={size}>{size}</option>;
+                        return <button className={that.state.gridSize == size ? 'selected' : ''}
+                                       onClick={that.selectGridSize.bind(that, size)}>{size}</button>;
                     })}
-                </select>
-                <br/>
-                <label htmlFor="preset">Image</label>
-                <select ref="imagePreset" id="preset">
+                </div>
+
+                <div className="button-group images">
+                    <h3>Image</h3>
                     {this.props.images.map(function(img, i) {
-                        return <option key={i} value={img}>{img}</option>
+                        return <button className={that.state.imageIndex == i ? 'selected' : ''}
+                                       onClick={that.selectImage.bind(that, i)}><img src={img}/></button>;
                     })}
-                </select>
-                <br/>
-                <input type="text" placeholder="...or enter your own image URL" ref="image" />
-                <button onClick={this.handleSubmit.bind(this)}>Start Game</button>
-            </form>
+                </div>
+
+                <div className="button-group">
+                    <button onClick={this.handleSubmit.bind(this)}>Start Game</button>
+                </div>
+            </div>
         );
     }
 }
@@ -186,11 +213,12 @@ class Puzzle extends Component {
 
         if (this.isSorted()) {
             return (
-                <div key="winner" id="winner"><h1>WINNER!</h1></div>
+                <div key="winner" className="winner"
+                     style={{backgroundImage: 'url('+ this.props.image +')'}}><h1>WINNER!</h1></div>
             );
         } else {
             return (
-                <div key="squares" id="squares" className={"squares-" + this.props.gridSize}
+                <div key="squares" className={"squares squares-" + this.props.gridSize}
                     style={{backgroundImage: 'url('+ this.props.image +')'}}>
                     {this.state.squares.map(function (square) {
                         if (square.id == blankId) {

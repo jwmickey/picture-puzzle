@@ -1,33 +1,28 @@
-Memory Game!
+Picture Puzzle!
 ============
 
-This is the classic card-flip memory game.  Flip two cards at a time to try to
-match the same cards.  If the two cards do not match, they will flip back over
-and you'll have to try again.  Once you match all cards the game is over and
-you will receive a score.  
+This is the classic picture slider puzzle.  The puzzle is split into 
+a grid of squares with the object being to move squares around until 
+they are in the original order, resulting in the original picture.
 
-Points are awarded based on how many times each card is flipped:
+In this version the blank square should always end up in the bottom 
+right corner when finished.
 
-* One Flip: 10 Points
-* Two Flips: 5 Points
-* Three Flips: 3 Points
-* Four or More Flips: -5 Points
+To move squares, click a square above, below, or beside the blank square to 
+move it to the blank position.  You can also use the up/down/left/right arrow 
+keys to move the blank tile.  Note that on a physical board, you would instead move 
+the tile that is free to slide in the direction of the blank space.  I had 
+implemented this behavior at first, but found it much more intuitive to "move" the 
+blank square so that the keyboard inputs would not be reversed.
 
-This game is nothing special - I just needed an excuse to play with
-react-hot-loader and webpack!
+This game is unfortunately not optimized for mobile devices.  It should work fine 
+on a 
 
-[PLAY!](https://jwmickey.github.com/memory-game)
+[PLAY!](https://jwmickey.github.com/picture-puzzle)
 -------
-
-TODO:
------
-
-* Provide some image sets to use for cards rather than simple numbers
 
 Acknowledgements:
 -----------------
 
-Thanks to Dan Abramov for the [react-hot-loader](https://github.com/gaearon/react-hot-loader)
-quick-start and his work on the project.
+The preset images used in the puzzle are courtesy of the North Carolina Zoo. 
 
-Also thanks to Chris Harrington for the [CSS animation code](https://www.codementor.io/reactjs/tutorial/building-a-flipper-using-react-js-and-less-css).
