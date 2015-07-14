@@ -1,4 +1,74 @@
 html, body {
-    margin: 0;
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+#root {
+    width: 500px;
+    height: 500px;
+    border: 5px solid #aaa;
+    box-shadow: 0 5px 5px #555;
+}
+#winner {
+    width: 500px;
+    height: 500px;
+    background-image: url('http://i.imgur.com/ztey3M9.jpg');
+
+    h1 {
+        text-align: center;
+        margin: 0;
+        padding: 50px 0;
+    }
+}
+#squares {
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    background-image: url('http://i.imgur.com/ztey3M9.jpg');
+
+    > div {
+        background: rgba(255, 255, 255, 1) no-repeat;
+        background-image: inherit;
+        background-size: 500px 500px;
+        box-shadow: 0 0 0 1px #FFF inset;
+        color: #fff;
+        font-size: 24px;
+        text-align: center;
+        position: relative;
+    }
+
+    &.squares-4 > div {
+        flex: 0 0 50%;
+        height: 50%;
+    }
+
+    &.squares-9 > div {
+        flex: 0 0 33.3333%;
+        height: 33.3333%;
+    }
+
+    &.squares-16 > div {
+        flex: 0 0 25%;
+        height: 25%;
+    }
+
+    &.squares-25 > div {
+        flex: 0 0 20%;
+        height: 20%;
+    }
+
+    &.squares-36 > div {
+        flex: 0 0 16.6666%;
+        height: 16.6666%;
+    }
+
+    &.squares-49 > div {
+        flex: 0 0 14.2857%;
+        height: 14.2857%;
+    }
+
+    &.squares-64 > div {
+        flex: 0 0 12.5%;
+        height: 12.5%;
+    }
 }
