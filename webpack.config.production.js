@@ -1,42 +1,43 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
+  mode: "production",
   devtool: 'source-map',
   entry: './src/index',
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/dist/'
+    chunkFilename: "[name].bundle.js"
   },
   resolve: {
-    extensions: [ '', '.js' ]
+    extensions: [ '.js' ]
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    })
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: "Picture Puzzle",
+      template: "index.html"
+    }),
   ],
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      loaders: ['babel'],
-      include: path.join(__dirname, 'src')
+    rules: [{
+      test: /\.js?$/,
+      exclude: "/(node_modules|bower_components)/",
+      use: {
+        loader: "babel-loader",
+        options: {
+          presets: ["@babel/preset-env"]
+        }
+      }
     },{
       test: /\.less$/,
-      loader: 'style!css!less'
-    },{
-      test: /\.html?$/,
-      loaders: ['file?name=[name].[ext]'],
-      include: __dirname
+      loader: "style-loader!css-loader!less-loader"
     }]
   }
 };

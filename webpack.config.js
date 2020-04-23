@@ -1,42 +1,48 @@
-var path = require('path');
-var webpack = require('webpack');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
+  mode: "development",
   devtool: 'eval',
-  entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
-    './src/index'
-  ],
+  entry: {
+    index: "./src/index.js"
+  },
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/dist/'
+    chunkFilename: "[name].bundle.js"
   },
   devServer: {
-    contentBase: "./dist",
-    noInfo: true, //  --no-info option
-    hot: true,
-    inline: true
+    stats: "errors-only",
+    overlay: true,
+    host: "0.0.0.0",
+    port: 3000
   },
   plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: "Picture Puzzle",
+      template: "index.html"
+    }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loaders: ['react-hot', 'babel-loader'],
-        include: path.join(__dirname, 'src')
+        test: /\.js?$/,
+        exclude: "/(node_modules|bower_components)/",
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"]
+          }
+        }
       },
       {
         test: /\.less$/,
-        loader: 'style!css!less'
+        loader: "style-loader!css-loader!less-loader"
       }
     ]
   }

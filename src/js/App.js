@@ -137,7 +137,7 @@ class Puzzle extends Component {
 
     isSorted() {
         for (var i = 0; i < this.state.squares.length; i++) {
-            if (this.state.squares[i].position != i) {
+            if (this.state.squares[i].position !== i) {
                 return false;
             }
         }
@@ -167,30 +167,30 @@ class Puzzle extends Component {
         let pos = this.state.squares[squareId].position;
         let blankPos = this.getBlankPos();
 
-        if ((pos - this.props.gridSqrt == blankPos) ||    // move up
-            (pos + this.props.gridSqrt == blankPos) ||    // move down
-            ((Math.abs(pos - blankPos) == 1) && // move left or right
-             (Math.ceil((pos + 1) / this.props.gridSqrt) == Math.ceil((blankPos + 1) / this.props.gridSqrt))))
+        if ((pos - this.props.gridSqrt === blankPos) ||    // move up
+            (pos + this.props.gridSqrt === blankPos) ||    // move down
+            ((Math.abs(pos - blankPos) === 1) && // move left or right
+             (Math.ceil((pos + 1) / this.props.gridSqrt) === Math.ceil((blankPos + 1) / this.props.gridSqrt))))
         {
 
             let squares = this.state.squares;
             let tmp = squares[this.state.blankId].position;
             squares[this.state.blankId].position = pos;
             squares[squareId].position = tmp;
-            this.setState({squares: squares});
+            this.setState({ squares }, null);
         }
     }
 
     handleKeyDown(event) {
         let blankPos = this.getBlankPos();
 
-        if (event.keyCode == 37) {  // left
+        if (event.keyCode === 37) {  // left
             this.handleMove(this.getSquareIdAt(blankPos - 1));
-        } else if (event.keyCode == 38) { // up
+        } else if (event.keyCode === 38) { // up
             this.handleMove(this.getSquareIdAt(blankPos - this.props.gridSqrt));
-        } else if (event.keyCode == 39) { // right
+        } else if (event.keyCode === 39) { // right
             this.handleMove(this.getSquareIdAt(blankPos + 1));
-        } else if (event.keyCode == 40) { // down
+        } else if (event.keyCode === 40) { // down
             this.handleMove(this.getSquareIdAt(blankPos + this.props.gridSqrt));
         }
     }
@@ -221,7 +221,7 @@ class Puzzle extends Component {
                 <div key="squares" className={"squares squares-" + this.props.gridSize}
                     style={{backgroundImage: 'url('+ this.props.image +')'}}>
                     {this.state.squares.map(function (square) {
-                        if (square.id == blankId) {
+                        if (square.id === blankId) {
                             return <Blank key={square.id} {...square} />
                         } else {
                             return <Square key={square.id} {...square} clickHandler={handleMove}/>
@@ -240,7 +240,7 @@ class Square extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props.position != nextProps.position;
+        return this.props.position !== nextProps.position;
     }
 
     render() {
@@ -250,7 +250,7 @@ class Square extends Component {
         };
 
         return (
-            <div style={styles} onClick={this.click.bind(this)}></div>
+            <div style={styles} onClick={this.click.bind(this)} />
         );
     }
 }
@@ -264,7 +264,7 @@ class Blank extends Component {
         };
 
         return (
-            <div style={styles}></div>
+            <div style={styles} />
         );
     }
 }
