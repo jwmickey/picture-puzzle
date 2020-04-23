@@ -1,6 +1,5 @@
 {
   "plugins": [
-    "react-refresh/babel",
     "@babel/plugin-transform-react-jsx"
   ],
   "presets": [

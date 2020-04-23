@@ -1,14 +1,13 @@
-const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  mode: "production",
+  mode: 'production',
   devtool: 'source-map',
   entry: './src/index',
   output: {
-    chunkFilename: "[name].bundle.js"
+    chunkFilename: '[name].bundle.js'
   },
   resolve: {
     extensions: [ '.js' ]
@@ -21,23 +20,23 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: "Picture Puzzle",
-      template: "index.html"
+      title: 'Picture Puzzle',
+      template: 'index.html'
     }),
   ],
   module: {
     rules: [{
       test: /\.js?$/,
-      exclude: "/(node_modules|bower_components)/",
+      exclude: '/(node_modules|bower_components)/',
       use: {
-        loader: "babel-loader",
+        loader: 'babel-loader',
         options: {
-          presets: ["@babel/preset-env"]
+          presets: ['@babel/preset-env']
         }
       }
     },{
       test: /\.less$/,
-      loader: "style-loader!css-loader!less-loader"
+      loader: 'style-loader!css-loader!less-loader'
     }]
   }
 };

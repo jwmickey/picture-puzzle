@@ -15,11 +15,20 @@ the tile that is free to slide in the direction of the blank space.  I had
 implemented this behavior at first, but found it much more intuitive to "move" the 
 blank square so that the keyboard inputs would not be reversed.
 
-This game is unfortunately not optimized for mobile devices.  It should work fine 
-on a 
+This game is unfortunately not optimized for mobile devices. 
 
 [PLAY!](https://jwmickey.github.com/picture-puzzle)
 -------
+
+TODO:
+-----
+
+1. Save puzzle state in local storage
+2. Allow uploading an image or providing a URL
+3. Use css position transforms instead of flexbox order so we can animate movement
+4. Do not use shuffle function to mix up puzzle
+5. Write a solver algorithm
+6. Add click/touch interaction for mobile devices, use viewport vmax
 
 Acknowledgements:
 -----------------
