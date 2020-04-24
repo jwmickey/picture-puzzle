@@ -1,70 +1,55 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import Tile from './Tile';
+import {saveGame, loadGame, getTargetPosition, calcTileMovement, mixUpTiles, createTiles, isSolved} from '../util/game';
 
-function shuffle(a,b,c,d) {
-    c=a.length;while(c)b=Math.random()*c--|0,d=a[c],a[c]=a[b],a[b]=d;
-}
 
-function Puzzle({ gridSize, gridSqrt, picSize, bgOffset, image, onFinish }) {
-    const blankId = gridSize - 1;
+function Puzzle({ gridSize, image, onFinish, exit }) {
     const [tiles, setTiles] = useState([]);
     const [tilePositions, setTilePositions] = useState([]);
+    const config = useMemo(() => {
+        const gridSqrt = Math.sqrt(gridSize);
+        return {
+            gridSize,
+            gridSqrt,
+            squareSize: 500 / gridSqrt,
+            bgOffset: 1 / gridSqrt,
+            picSize: 500
+        }
+    }, [gridSize]);
 
     // initial setup
     useEffect(() => {
-        let t = [];
-        let p = [];
-        let positions = Array.apply(null, {length: gridSize}).map(Number.call, Number);
-        // TODO: this may result in an unsolvable puzzle
-        shuffle(positions);
-        for (let i = 0; i < gridSize; i++) {
-            t.push({
-                id: i,
-                bgX: (i % gridSqrt) * picSize * bgOffset,
-                bgY: Math.floor(i / gridSqrt) * picSize * bgOffset
-            });
-            p.push(positions[i]);
+        const { gridSize, picSize, bgOffset } = config;
+        const gameInProgress = loadGame(image);
+        let t, p;
+
+        if (gameInProgress !== false) {
+            // load from saved game
+            t = gameInProgress.tiles;
+            p = gameInProgress.positions;
+        } else {
+            // start a new game
+            t = createTiles(gridSize, picSize, bgOffset);
+            p = mixUpTiles(gridSize);
+            saveGame(image, p, t);
         }
         setTiles(t);
         setTilePositions(p);
-    }, [gridSize, gridSqrt, picSize, bgOffset]);
+    }, [config, image]);
 
     // determine movement
     const handleMove = useCallback(
         direction => {
-            const blankPos = tilePositions[blankId];
-            let nextPos;
-            switch (direction) {
-                case 'left':
-                    nextPos = blankPos - 1;
-                    break;
-                case 'up':
-                    nextPos = blankPos - gridSqrt;
-                    break;
-                case 'right':
-                    nextPos = blankPos + 1;
-                    break;
-                case 'down':
-                    nextPos = blankPos + gridSqrt;
-                    break;
-            }
+            const blankPos = tilePositions[gridSize - 1];
+            const nextPos = getTargetPosition(gridSize, blankPos, direction);
+            const nextPositions = calcTileMovement(gridSize, blankPos, nextPos, tilePositions);
 
-            const tileId = tilePositions.findIndex(tp => tp === nextPos);
-            const pos = tilePositions[tileId];
-
-            if ((pos - gridSqrt === blankPos) ||    // move up
-                (pos + gridSqrt === blankPos) ||    // move down
-                ((Math.abs(pos - blankPos) === 1) && // move left or right
-                    (Math.ceil((pos + 1) / gridSqrt) === Math.ceil((blankPos + 1) / gridSqrt))))
-            {
-                let positions = [...tilePositions];
-                let tmp = positions[blankId];
-                positions[blankId] = pos;
-                positions[tileId] = tmp;
-                setTilePositions(positions);
+            if (nextPositions !== false) {
+                setTilePositions(nextPositions);
+                saveGame(image, nextPositions);
             }
         },
-        [blankId, gridSqrt, tilePositions]
+        [gridSize, tilePositions, image]
     );
 
     // handle keypress
@@ -87,11 +72,7 @@ function Puzzle({ gridSize, gridSqrt, picSize, bgOffset, image, onFinish }) {
         }
     }, [handleMove]);
 
-    function isSorted() {
-        return tilePositions.every((t, i) => t === i);
-    }
-
-    if (isSorted()) {
+    if (isSolved(tilePositions)) {
         return (
             <div onClick={onFinish}
                  className="winner"
@@ -99,19 +80,24 @@ function Puzzle({ gridSize, gridSqrt, picSize, bgOffset, image, onFinish }) {
         );
     } else {
         return (
-            <div className={'squares squares-' + gridSize} data-lastupdate={(new Date()).toTimeString()}
-                 style={{backgroundImage: 'url('+ image +')'}}>
-                {tiles.map(tile => {
-                    if (tile.id === blankId) {
-                        return <div key={tile.id} style={{order: tilePositions[tile.id], backgroundImage: 'none'}} />
-                    } else {
-                        return <Tile key={tile.id}
-                                     handleClick={() => handleMove(tile.id)}
-                                     position={tilePositions[tile.id]}
-                                     {...tile} />
-                    }
-                })}
-            </div>
+            <>
+                <div className={'squares squares-' + gridSize}
+                     style={{backgroundImage: 'url('+ image +')'}}>
+                    {tiles.map(tile => {
+                        if (tile.id === gridSize - 1) {
+                            return <div key={tile.id} style={{order: tilePositions[tile.id], backgroundImage: 'none'}} />
+                        } else {
+                            return <Tile key={tile.id}
+                                         handleClick={() => handleMove(tile.id)}
+                                         position={tilePositions[tile.id]}
+                                         {...tile} />
+                        }
+                    })}
+                </div>
+                <div className="controls">
+                    <button onClick={exit}>Finish Later</button>
+                </div>
+            </>
         );
     }
 }

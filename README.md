@@ -23,12 +23,10 @@ This game is unfortunately not optimized for mobile devices.
 TODO:
 -----
 
-1. Save puzzle state in local storage
-2. Allow uploading an image or providing a URL
-3. Use css position transforms instead of flexbox order so we can animate movement
-4. Do not use shuffle function to mix up puzzle
-5. Write a solver algorithm
-6. Add click/touch interaction for mobile devices, use viewport vmax
+1. Allow uploading an image or providing a URL
+2. Use css position transforms instead of flexbox order so we can animate movement
+3. Write a solver algorithm
+4. Add click/touch interaction for mobile devices, use viewport vmax
 
 Acknowledgements:
 -----------------
