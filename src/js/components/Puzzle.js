@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import Tile from './Tile';
-import {saveGame, loadGame, getTargetPosition, calcTileMovement, mixUpTiles, createTiles, isSolved} from '../util/game';
+import { saveGame, loadGame, getTargetPosition, calcTileMovement, mixUpTiles, isSolved } from '../util/game';
 
 
 function Puzzle({ gridSize, image, onFinish, exit }) {
-    const [tiles, setTiles] = useState([]);
     const [tilePositions, setTilePositions] = useState([]);
     const config = useMemo(() => {
         const gridSqrt = Math.sqrt(gridSize);
@@ -19,23 +18,14 @@ function Puzzle({ gridSize, image, onFinish, exit }) {
 
     // initial setup
     useEffect(() => {
-        const { gridSize, picSize, bgOffset } = config;
-        const gameInProgress = loadGame(image);
-        let t, p;
-
-        if (gameInProgress !== false) {
-            // load from saved game
-            t = gameInProgress.tiles;
-            p = gameInProgress.positions;
-        } else {
+        let positions = loadGame(image);
+        if (positions === null) {
             // start a new game
-            t = createTiles(gridSize, picSize, bgOffset);
-            p = mixUpTiles(gridSize);
-            saveGame(image, p, t);
+            positions = mixUpTiles(config.gridSize);
+            saveGame(image, positions);
         }
-        setTiles(t);
-        setTilePositions(p);
-    }, [config, image]);
+        setTilePositions(positions);
+    }, [config.gridSize, image]);
 
     // determine movement
     const handleMove = useCallback(
@@ -81,18 +71,17 @@ function Puzzle({ gridSize, image, onFinish, exit }) {
     } else {
         return (
             <>
-                <div className={'squares squares-' + gridSize}
-                     style={{backgroundImage: 'url('+ image +')'}}>
-                    {tiles.map(tile => {
-                        if (tile.id === gridSize - 1) {
-                            return <div key={tile.id} style={{order: tilePositions[tile.id], backgroundImage: 'none'}} />
-                        } else {
-                            return <Tile key={tile.id}
-                                         handleClick={() => handleMove(tile.id)}
-                                         position={tilePositions[tile.id]}
-                                         {...tile} />
-                        }
-                    })}
+                <div className={'squares squares-' + gridSize}>
+                    {[...Array(gridSize).keys()].map(id => (
+                        <Tile key={id}
+                              id={id}
+                              image={image}
+                              gridSize={gridSize}
+                              tileSize={config.squareSize}
+                              handleClick={() => handleMove(id)}
+                              position={tilePositions[id]}
+                              isBlank={id === gridSize - 1} />
+                    ))}
                 </div>
                 <div className="controls">
                     <button onClick={exit}>Finish Later</button>

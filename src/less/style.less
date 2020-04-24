@@ -68,64 +68,51 @@ body {
 .squares {
     width: @appWidth;
     height: @appHeight;
-    display: -webkit-flex;
     display: flex;
-    -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
-    -webkit-justify-content: center;
-    justify-content: center;
     box-shadow: 0 0 5px #555555;
 
     > div {
         background-color: #fff;
         background-repeat: no-repeat;
-        background-image: inherit;
         background-size: 500px 500px;
-        box-shadow: 0 0 0 1px #FFF inset;
-        color: #000;
+        box-shadow: 0 0 0 1px rgba(255,255,255,0.75) inset;
         font-size: 24px;
         text-align: center;
         position: relative;
     }
 
     &.squares-4 > div {
-        -webkit-flex: 0 0 50%;
         flex: 0 0 50%;
         height: 50%;
     }
 
     &.squares-9 > div {
-        -webkit-flex: 0 0 33.3333%;
         flex: 0 0 33.3333%;
         height: 33.3333%;
     }
 
     &.squares-16 > div {
-        -webkit-flex: 0 0 25%;
         flex: 0 0 25%;
         height: 25%;
     }
 
     &.squares-25 > div {
-        -webkit-flex: 0 0 20%;
         flex: 0 0 20%;
         height: 20%;
     }
 
     &.squares-36 > div {
-        -webkit-flex: 0 0 16.6666%;
         flex: 0 0 16.6666%;
         height: 16.6666%;
     }
 
     &.squares-49 > div {
-        -webkit-flex: 0 0 14.2857%;
         flex: 0 0 14.2857%;
         height: 14.2857%;
     }
 
     &.squares-64 > div {
-        -webkit-flex: 0 0 12.5%;
         flex: 0 0 12.5%;
         height: 12.5%;
     }

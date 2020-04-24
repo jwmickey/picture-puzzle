@@ -24,9 +24,8 @@ TODO:
 -----
 
 1. Allow uploading an image or providing a URL
-2. Use css position transforms instead of flexbox order so we can animate movement
-3. Write a solver algorithm
-4. Add click/touch interaction for mobile devices, use viewport vmax
+2. Write a solver algorithm
+3. Add click/touch interaction for mobile devices, use viewport vmax
 
 Acknowledgements:
 -----------------

@@ -8,26 +8,24 @@ function shuffle(a,b,c,d) {
     c=a.length;while(c)b=Math.random()*c--|0,d=a[c],a[c]=a[b],a[b]=d;
 }
 
-export function saveGame(image, positions, tiles) {
+export function saveGame(image, positions) {
     const gameId = md5(image);
-    window.localStorage.setItem(`${gameId}_positions`, JSON.stringify(positions));
-    if (tiles !== undefined) {
-        window.localStorage.setItem(`${gameId}_tiles`, JSON.stringify(tiles));
-    }
+    window.localStorage.setItem(`ppuzz_${gameId}`, JSON.stringify(positions));
 }
 
 export function loadGame(image) {
     const gameId = md5(image);
-    const tiles = window.localStorage.getItem(`${gameId}_tiles`);
-    const positions = window.localStorage.getItem(`${gameId}_positions`);
-    if (tiles && positions) {
-        return {
-            tiles: JSON.parse(tiles),
-            positions: JSON.parse(positions)
-        };
+    const asJson = window.localStorage.getItem(`ppuzz_${gameId}`);
+    if (false) { // asJson != null) {
+        return JSON.parse(asJson);
     } else {
-        return false;
+        return null;
     }
+}
+
+export function clearGame(image) {
+    const gameId = md5(image);
+    window.localStorage.removeItem(`ppuzz_${gameId}`);
 }
 
 export function getTargetPosition(gridSize, blankPos, direction) {
@@ -62,19 +60,6 @@ export function calcTileMovement(gridSize, blankPos, nextPos, currentPositions) 
     return false;
 }
 
-export function createTiles(gridSize, picSize, bgOffset) {
-    const gridSqrt = Math.sqrt(gridSize);
-    let t = Array(gridSize);
-    for (let i = 0; i < t.length; i++) {
-        t[i] = {
-            id: i,
-            bgX: (i % gridSqrt) * picSize * bgOffset,
-            bgY: Math.floor(i / gridSqrt) * picSize * bgOffset
-        };
-    }
-    return t;
-}
-
 export function mixUpTiles(gridSize, difficulty = 5) {
     // difficulty should be between 1 and 10, inclusive
     difficulty = Math.max(1, Math.min(10, difficulty));
@@ -89,6 +74,7 @@ export function mixUpTiles(gridSize, difficulty = 5) {
         'left', 'up', 'right', 'up', 'left', 'down', 'left', 'up', 'right', 'down', 'down',
         'left', 'up', 'right', 'right', 'right', 'down', 'down', 'left', 'up', 'up', 'left'
     ];
+    // const movements = ['left'];
 
     // move the puzzle around.
     p = movements.reduce((shuffled, direction) => {
