@@ -1,30 +1,30 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 function Tile({ id, isBlank, image, position, tileSize, gridSize, handleClick }) {
-    const gridSqrt = Math.sqrt(gridSize);
-
     // calculate selection of image to display
-    const bgOffset = 1 / gridSqrt;
-    const bgX = (id % gridSqrt) * 500 * bgOffset;
-    const bgY = Math.floor(id / gridSqrt) * 500 * bgOffset;
-    const backgroundImage = `url(${image})`;
-    const backgroundPosition = `-${bgX}px -${bgY}px`;
+    const background = useMemo(() => {
+        const bgOffset = 1 / gridSize;
+        const bgX = (id % gridSize) * 500 * bgOffset;
+        const bgY = Math.floor(id / gridSize) * 500 * bgOffset;
+        return `url(${image}) -${bgX}px -${bgY}px no-repeat`;
+    }, [image, gridSize, id]);
 
     // calculate css translate position
-    const origX = id % gridSqrt;
-    const origY = Math.floor(id / gridSqrt);
-    const destX = position % gridSqrt;
-    const destY = Math.floor(position / gridSqrt);
-    const offsetX = (destX - origX) * tileSize;
-    const offsetY = (destY - origY) * tileSize;
+    const transform = useMemo(() => {
+        const origX = id % gridSize;
+        const origY = Math.floor(id / gridSize);
+        const destX = position % gridSize;
+        const destY = Math.floor(position / gridSize);
+        const offsetX = (destX - origX) * tileSize;
+        const offsetY = (destY - origY) * tileSize;
+        return `translate(${offsetX}px, ${offsetY}px)`;
+    }, [id, position, tileSize, gridSize]);
 
     return (
         <div style={{
-            backgroundImage: isBlank ? 'none' : backgroundImage,
-            backgroundPosition,
+            background: isBlank ? 'none' : background,
             order: id,
-            transform: `translate(${offsetX}px, ${offsetY}px)`,
-            transition: 'transform 75ms ease-in-out'
+            transform,
         }} onClick={handleClick} />
     );
 }

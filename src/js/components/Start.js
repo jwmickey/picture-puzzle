@@ -11,7 +11,7 @@ function Start({ gridSize, images, start, sizes }) {
                 {sizes.map(s => (
                     <button key={s}
                             className={size === s ? 'selected' : ''}
-                            onClick={() => setSize(s)}>{s}</button>
+                            onClick={() => setSize(s)}>{s} &times; {s}</button>
                 ))}
             </div>
 

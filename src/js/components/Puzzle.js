@@ -1,20 +1,19 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { debounce } from 'debounce';
 import Tile from './Tile';
-import { saveGame, loadGame, getTargetPosition, calcTileMovement, mixUpTiles, isSolved } from '../util/game';
+import Controls from './Controls';
+import { calcDimensions, saveGame, loadGame, getTargetPosition, calcTileMovement, mixUpTiles, isSolved } from '../util/game';
 
+const DEFAULT_CONFIG = {
+    sqrt: 4,
+    bgOffset: 1 / 500,
+    tileSize: 125,
+    imageSize: 500
+};
 
 function Puzzle({ gridSize, image, onFinish, exit }) {
     const [tilePositions, setTilePositions] = useState([]);
-    const config = useMemo(() => {
-        const gridSqrt = Math.sqrt(gridSize);
-        return {
-            gridSize,
-            gridSqrt,
-            squareSize: 500 / gridSqrt,
-            bgOffset: 1 / gridSqrt,
-            picSize: 500
-        }
-    }, [gridSize]);
+    const [config, setConfig] = useState(DEFAULT_CONFIG);
 
     // initial setup
     useEffect(() => {
@@ -27,10 +26,22 @@ function Puzzle({ gridSize, image, onFinish, exit }) {
         setTilePositions(positions);
     }, [config.gridSize, image]);
 
+    useEffect(() => {
+        const resize = debounce(() => {
+            setConfig(calcDimensions(gridSize));
+        }, 500);
+        resize();
+
+        window.addEventListener('resize', resize);
+        return () => {
+            window.removeEventListener('resize', resize);
+        }
+    }, [gridSize]);
+
     // determine movement
     const handleMove = useCallback(
         direction => {
-            const blankPos = tilePositions[gridSize - 1];
+            const blankPos = tilePositions[gridSize * gridSize - 1];
             const nextPos = getTargetPosition(gridSize, blankPos, direction);
             const nextPositions = calcTileMovement(gridSize, blankPos, nextPos, tilePositions);
 
@@ -62,6 +73,8 @@ function Puzzle({ gridSize, image, onFinish, exit }) {
         }
     }, [handleMove]);
 
+    const numTiles = gridSize * gridSize;
+
     if (isSolved(tilePositions)) {
         return (
             <div onClick={onFinish}
@@ -70,23 +83,22 @@ function Puzzle({ gridSize, image, onFinish, exit }) {
         );
     } else {
         return (
-            <>
-                <div className={'squares squares-' + gridSize}>
-                    {[...Array(gridSize).keys()].map(id => (
+            <div style={{display:'flex'}}>
+                <div className={'squares squares-' + gridSize}
+                     style={{width:config.imageSize,height:config.imageSize}}>
+                    {[...Array(numTiles).keys()].map(id => (
                         <Tile key={id}
                               id={id}
                               image={image}
                               gridSize={gridSize}
-                              tileSize={config.squareSize}
+                              tileSize={config.tileSize}
                               handleClick={() => handleMove(id)}
                               position={tilePositions[id]}
-                              isBlank={id === gridSize - 1} />
+                              isBlank={id === numTiles - 1} />
                     ))}
                 </div>
-                <div className="controls">
-                    <button onClick={exit}>Finish Later</button>
-                </div>
-            </>
+                <Controls handleMove={handleMove} handleExit={exit} />
+            </div>
         );
     }
 }

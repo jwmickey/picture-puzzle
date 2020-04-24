@@ -4,9 +4,9 @@ import Puzzle from './Puzzle';
 import images from '../images';
 import { clearGame } from '../util/game';
 
-const GRID_SIZES  = [9, 16, 25, 36, 49, 64];
+const GRID_SIZES  = [3, 4, 5, 6, 7, 8];
 const DEFAULT_CONFIG = {
-    gridSize: 16,
+    gridSize: 4,
     image: null
 };
 
