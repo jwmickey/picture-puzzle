@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Start from './Start';
 import Puzzle from './Puzzle';
 import images from '../images';
-import { clearGame } from '../util/game';
 
 const GRID_SIZES  = [3, 4, 5, 6, 7, 8];
 const DEFAULT_CONFIG = {
@@ -23,7 +22,6 @@ function App() {
     }
 
     function reset() {
-        clearGame(puzzleConfig.image);
         setPuzzleConfig(DEFAULT_CONFIG);
         setInProgress(false);
     }
@@ -31,7 +29,7 @@ function App() {
     if (inProgress) {
         return (
             <Puzzle {...puzzleConfig}
-                    exit={() => setInProgress(false)}
+                    onExit={() => setInProgress(false)}
                     onFinish={reset} />
         );
     } else {

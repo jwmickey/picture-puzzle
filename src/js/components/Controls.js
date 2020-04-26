@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Controls({ handleMove, handleExit }) {
+function Controls({ handleMove, handleExit, handleReset }) {
     return (
         <div className="controls">
             <div className="dpad">
@@ -9,8 +9,9 @@ function Controls({ handleMove, handleExit }) {
                 <div className="right" onClick={() => handleMove('right')}>➡️</div>
                 <div className="down" onClick={() => handleMove('down')}>⬇️</div>
             </div>
-            <div>
+            <div className="buttons">
                 <button onClick={handleExit}>Finish Later</button>
+                <button onClick={() => confirm('Are you sure?') && handleReset()}>Start Over</button>
             </div>
         </div>
     );

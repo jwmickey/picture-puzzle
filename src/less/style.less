@@ -3,6 +3,8 @@
 
 body {
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .start {
@@ -43,9 +45,10 @@ body {
 }
 
 .winner {
-    width: @appWidth;
-    height: @appHeight;
+    width: @appWidth - 20;
+    height: @appHeight - 20;
     position: relative;
+    margin: 10px;
 
     h1 {
         position: absolute;
@@ -59,81 +62,83 @@ body {
     }
 }
 
+.puzzle {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    height: 100vmin;
+}
+
+@media (orientation: portrait) {
+    .puzzle {
+        flex-flow: column wrap;
+    }
+}
+
 .squares {
     width: @appWidth;
     height: @appHeight;
     display: flex;
     flex-flow: row wrap;
     box-shadow: 0 0 5px #555555;
+    margin: 0 20px;
 
     > div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         background-color: #fff;
         background-repeat: no-repeat;
         background-size: 500px 500px;
-        box-shadow: 0 0 0 1px rgba(255,255,255,0.75) inset;
-        font-size: 24px;
+        box-shadow: 0 0 2px rgba(50,50,50,0.25) inset, 0 0 2px rgba(255,255,255,0.75) inset;
+        font-size: 5vmin;
         text-align: center;
+        align-self: center;
         position: relative;
         transition: transform 75ms ease-in-out;
-    }
-
-    &.squares-3 > div {
-        flex: 0 0 33.3333%;
-        height: 33.3333%;
-    }
-
-    &.squares-4 > div {
-        flex: 0 0 25%;
-        height: 25%;
-    }
-
-    &.squares-5 > div {
-        flex: 0 0 20%;
-        height: 20%;
-    }
-
-    &.squares-6 > div {
-        flex: 0 0 16.6666%;
-        height: 16.6666%;
-    }
-
-    &.squares-7 > div {
-        flex: 0 0 14.2857%;
-        height: 14.2857%;
-    }
-
-    &.squares-8 > div {
-        flex: 0 0 12.5%;
-        height: 12.5%;
     }
 }
 
 .controls {
+    flex: 1;
     display: flex;
     justify-content: space-between;
     flex-flow: column wrap;
-    align-items: center;
+    align-self: stretch;
+    margin: 20px;
+
+    .buttons {
+        align-self: center;
+    }
 
     button {
         font-size: 20px;
         border-radius: 5px;
         padding: 5px 10px;
+        margin: 0 20px;
     }
 }
 
 .dpad {
+    flex: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    align-self: center;
     font-size: 10vmin;
-    width: 60vmin;
     flex-wrap: wrap;
 
     > div {
         text-align: center;
 
-        &.up, &.down {
+        &.up {
             width: 100%;
+            align-self: flex-end;
+        }
+        &.down {
+            width: 100%;
+            align-self: flex-start;
         }
         &.left, &.right {
             width: 50%;

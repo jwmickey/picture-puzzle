@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 
-function Tile({ id, isBlank, image, position, tileSize, gridSize, handleClick }) {
+function Tile({ id, isBlank, image, position, tileSize, gridSize }) {
     // calculate selection of image to display
     const background = useMemo(() => {
         const bgOffset = 1 / gridSize;
         const bgX = (id % gridSize) * 500 * bgOffset;
         const bgY = Math.floor(id / gridSize) * 500 * bgOffset;
-        return `url(${image}) -${bgX}px -${bgY}px no-repeat`;
+        return `url(${image}) -${bgX}px -${bgY}px / 500px 500px no-repeat`;
     }, [image, gridSize, id]);
 
     // calculate css translate position
@@ -22,10 +22,13 @@ function Tile({ id, isBlank, image, position, tileSize, gridSize, handleClick })
 
     return (
         <div style={{
-            background: isBlank ? 'none' : background,
+            background: isBlank ? '#eee' : background,
+            color: !!image ? 'transparent' : 'black',
+            width: tileSize,
+            height: tileSize,
             order: id,
             transform,
-        }} onClick={handleClick} />
+        }}>{!isBlank && (id + 1)}</div>
     );
 }
 

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
+const numbers = require('../../img/numbers.png').default;
+
 function Start({ gridSize, images, start, sizes }) {
     const [size, setSize] = useState(gridSize);
-    const [imageIndex, setImageIndex] = useState(0);
+    const [imageIndex, setImageIndex] = useState(-1);
 
     return (
         <div className="start">
@@ -17,6 +19,10 @@ function Start({ gridSize, images, start, sizes }) {
 
             <div className="button-group images">
                 <h3>Image</h3>
+                <button className={imageIndex === -1 ? 'selected' : ''}
+                        onClick={() => setImageIndex(-1)}>
+                    <img src={numbers} alt="Just Numbers" />
+                </button>
                 {images.map((img, i) => (
                     <button key={img}
                             className={imageIndex === i ? 'selected' : ''}
