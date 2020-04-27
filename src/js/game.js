@@ -50,7 +50,7 @@ export class Game {
         if (this.canMoveInDirection(dir)) {
             this.moveInDirection(dir);
             if (moves > 0) {
-                setTimeout(() => this.randomize(--moves, dir), 100);
+                setTimeout(() => this.randomize(--moves, dir), 125);
             }
         } else {
             this.randomize(moves, lastDir);

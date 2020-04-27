@@ -14,7 +14,7 @@ export default function useGame(game) {
         return () => {
             game.unsubscribe(handleUpdates);
         }
-    });
+    }, [game]);
 
     return {
         positions,

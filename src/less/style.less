@@ -78,12 +78,6 @@ body {
     height: 100vh;
 }
 
-@media (orientation: portrait) {
-    .puzzle {
-        flex-flow: column wrap;
-    }
-}
-
 .squares {
     width: @puzzleSize;
     height: @puzzleSize;
@@ -104,7 +98,7 @@ body {
         text-align: center;
         align-self: center;
         position: relative;
-        transition: transform 100ms ease-in;
+        transition: transform 75ms ease-in;
     }
 }
 
@@ -114,17 +108,17 @@ body {
     justify-content: space-between;
     flex-flow: column wrap;
     align-self: stretch;
-    margin: 20px;
+    margin: 20px 10px;
 
     .buttons {
         align-self: center;
     }
 
     button {
-        font-size: 20px;
+        font-size: 18px;
         border-radius: 5px;
         padding: 5px 10px;
-        margin: 0 20px;
+        margin: 0 10px;
     }
 }
 
@@ -148,5 +142,11 @@ body {
         &.left, &.right {
             width: 50%;
         }
+    }
+}
+
+@media (orientation: portrait) {
+    .puzzle {
+        flex-flow: column wrap;
     }
 }

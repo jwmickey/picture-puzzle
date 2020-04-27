@@ -1,18 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import debounce from 'debounce';
 import useGame from '../hooks/useGame';
 import Tile from './Tile';
 import Controls from './Controls';
-import { Game } from '../game';
 
-function Puzzle({ gridSize, image, onFinish, onExit }) {
-    const game = useRef(new Game(gridSize, image));
-    const G = game.current;
+function Puzzle({ game, onFinish, onExit }) {
+    const [G, setG] = useState(game);
     const { positions } = useGame(G);
 
     // handle resize events
     useEffect(() => {
-        console.log('handle resize');
         const resize = debounce(() => {
             G.setScreenSize(Math.min(window.innerWidth, window.innerHeight));
         }, 500);
@@ -25,7 +22,6 @@ function Puzzle({ gridSize, image, onFinish, onExit }) {
 
     // handle keypress
     useEffect(() => {
-        console.log('handle effect');
         function handleKeyDown(event) {
             let direction;
             switch (event.keyCode) {
@@ -44,8 +40,8 @@ function Puzzle({ gridSize, image, onFinish, onExit }) {
         }
     }, [G]);
 
+    const { tileSize, gridSize, image } = G.getConfig();
     const numTiles = gridSize * gridSize;
-    const { tileSize } = G.getConfig();
 
     if (G.isSolved()) {
         return (
@@ -74,7 +70,7 @@ function Puzzle({ gridSize, image, onFinish, onExit }) {
                           handleExit={onExit}
                           handleReset={() => G.reset()} />
             </div>
-        );
+         );
     }
 }
 
