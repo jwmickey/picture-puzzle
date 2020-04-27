@@ -12,20 +12,20 @@ function Puzzle({ gridSize, image, onFinish, onExit }) {
 
     // handle resize events
     useEffect(() => {
+        console.log('handle resize');
         const resize = debounce(() => {
             G.setScreenSize(Math.min(window.innerWidth, window.innerHeight));
         }, 500);
-        resize();
 
         window.addEventListener('resize', resize);
         return () => {
             window.removeEventListener('resize', resize);
         }
-    });
-
+    }, [G]);
 
     // handle keypress
     useEffect(() => {
+        console.log('handle effect');
         function handleKeyDown(event) {
             let direction;
             switch (event.keyCode) {
@@ -42,10 +42,10 @@ function Puzzle({ gridSize, image, onFinish, onExit }) {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         }
-    });
+    }, [G]);
 
     const numTiles = gridSize * gridSize;
-    const { imageSize, tileSize } = G.getConfig();
+    const { tileSize } = G.getConfig();
 
     if (G.isSolved()) {
         return (
@@ -59,7 +59,7 @@ function Puzzle({ gridSize, image, onFinish, onExit }) {
     } else {
         return (
             <div className="puzzle">
-                <div className="squares" style={{ width:imageSize, height:imageSize }}>
+                <div className="squares">
                     {[...Array(numTiles).keys()].map(id => (
                         <Tile key={id}
                               id={id}
