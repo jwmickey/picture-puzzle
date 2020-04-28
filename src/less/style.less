@@ -6,20 +6,30 @@ body {
     padding: 0;
 }
 
+#root {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 .start {
     padding: 20px;
-    max-width: 640px;
     display: flex;
     flex-flow: column wrap;
-    align-content: space-between;
-    justify-content: center;
 
     .button-group {
         flex: 1;
-        margin: 0 auto;
+        display: flex;
         text-align: center;
+        flex-flow: row wrap;
+        justify-content: center;
+        margin-top: 20px;
+
+        &:first-child {
+            margin-top: 0;
+        }
 
         h3 {
+            flex: 1 0 100%;
             margin: 10px 0 0 0;
         }
 
@@ -44,27 +54,30 @@ body {
 
             img {
                 display: block;
-                max-width: 100px;
-                max-height: 100px;
+                max-width: 80px;
+                max-height: 80px;
             }
         }
     }
 }
 
 .winner {
-    width: @puzzleSize;
-    height: @puzzleSize;
-    position: relative;
-    margin: 10px;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
 
     h1 {
-        position: absolute;
-        bottom: -2.5em;
-        left: 25%; right: 25%;
         text-align: center;
         padding: 5px;
-        color: white;
-        background-color: #999;
+        color: #000;
+        background-color: rgba(255,255,255,0.5);
         border-radius: 2px;
     }
 }
@@ -76,6 +89,7 @@ body {
     align-content: space-between;
     align-items: center;
     height: 100vh;
+    position: relative;
 }
 
 .squares {
@@ -85,6 +99,7 @@ body {
     flex-flow: row wrap;
     box-shadow: 0 0 5px #555555;
     margin: 10px;
+    position: relative;
 
     > div {
         display: flex;
@@ -112,13 +127,17 @@ body {
 
     .buttons {
         align-self: center;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
     }
 
     button {
         font-size: 18px;
         border-radius: 5px;
         padding: 5px 10px;
-        margin: 0 10px;
+        margin: 5px 10px;
+        min-width: 100px;
     }
 }
 
@@ -139,8 +158,13 @@ body {
             width: 100%;
             align-self: flex-start;
         }
-        &.left, &.right {
+        &.left {
             width: 50%;
+            text-align: left;
+        }
+        &.right {
+            width: 50%;
+            text-align: right;
         }
     }
 }

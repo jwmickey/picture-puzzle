@@ -25,7 +25,6 @@ TODO:
 
 1. Allow uploading an image or providing a URL
 2. Write a solver algorithm
-3. Improve "win" display, don't show during reset
 
 Acknowledgements:
 -----------------

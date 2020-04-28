@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import debounce from 'debounce';
 import useGame from '../hooks/useGame';
 import Tile from './Tile';
 import Controls from './Controls';
+import Winner from './Winner';
 
-function Puzzle({ game, onFinish, onExit }) {
+function Puzzle({ game, onExit }) {
     const [G, setG] = useState(game);
     const { positions } = useGame(G);
-
-    // handle resize events
-    useEffect(() => {
-        const resize = debounce(() => {
-            G.setScreenSize(Math.min(window.innerWidth, window.innerHeight));
-        }, 500);
-
-        window.addEventListener('resize', resize);
-        return () => {
-            window.removeEventListener('resize', resize);
-        }
-    }, [G]);
 
     // handle keypress
     useEffect(() => {
@@ -43,35 +31,25 @@ function Puzzle({ game, onFinish, onExit }) {
     const { tileSize, gridSize, image } = G.getConfig();
     const numTiles = gridSize * gridSize;
 
-    if (G.isSolved()) {
-        return (
-            <div onClick={() => {
-                    G.clear();
-                    onFinish();
-                 }}
-                 className="winner"
-                 style={{backgroundImage: 'url('+ image +')'}}><h1>WINNER!</h1></div>
-        );
-    } else {
-        return (
-            <div className="puzzle">
-                <div className="squares">
-                    {[...Array(numTiles).keys()].map(id => (
-                        <Tile key={id}
-                              id={id}
-                              image={image}
-                              gridSize={gridSize}
-                              tileSize={tileSize}
-                              position={positions[id]}
-                              isBlank={id === numTiles - 1} />
-                    ))}
-                </div>
-                <Controls handleMove={d => G.moveInDirection(d)}
-                          handleExit={onExit}
-                          handleReset={() => G.reset()} />
+    return (
+        <div className="puzzle">
+            <div className="squares">
+                {game.isSolved() && <Winner close={onExit} image={image} />}
+                {game.tiles.map(id => (
+                    <Tile key={id}
+                          id={id}
+                          image={image}
+                          gridSize={gridSize}
+                          tileSize={tileSize}
+                          position={positions[id]}
+                          isBlank={id === numTiles - 1} />
+                ))}
             </div>
-         );
-    }
+            <Controls handleMove={d => G.moveInDirection(d)}
+                      handleExit={onExit}
+                      handleReset={() => G.reset()} />
+        </div>
+    );
 }
 
 export default Puzzle;

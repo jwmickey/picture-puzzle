@@ -1,12 +1,13 @@
 const Game = require('./game').Game;
 
 test('initialization', () => {
+    window.innerWidth = 500;
+    window.innerHeight = 500;
     const g = new Game(4, 'fake-image.jpg', false);
     const expectedConfig = {
         gridSize: 4,
         image: 'fake-image.jpg',
         imageSize: 480,
-        bgOffset: (1 / 480),
         tileSize: (480 / 4)
     };
 

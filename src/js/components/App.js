@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import debounce from 'debounce';
 import Start from './Start';
 import Puzzle from './Puzzle';
 import images from '../images';
-import {Game} from "../game";
+import { Game } from '../game';
 
 const GRID_SIZES  = [3, 4, 5, 6, 7, 8];
 const DEFAULT_CONFIG = {
@@ -14,6 +15,18 @@ function App() {
     const [inProgress, setInProgress] = useState(false);
     const [puzzleConfig, setPuzzleConfig] = useState(DEFAULT_CONFIG);
     const [game, setGame] = useState(null);
+
+    // handle resize events
+    useEffect(() => {
+        const resize = debounce(() => {
+            game.setScreenSize(Math.min(window.innerWidth, window.innerHeight));
+        }, 1000);
+
+        window.addEventListener('resize', resize);
+        return () => {
+            window.removeEventListener('resize', resize);
+        }
+    }, [game]);
 
     function start(gridSize, preset) {
         setPuzzleConfig({

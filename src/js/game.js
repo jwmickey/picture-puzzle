@@ -9,9 +9,10 @@ export class Game {
         this.subscribers = [];
         this.gridSize = gridSize;
         this.image = image;
+        this.tiles = [...Array(gridSize * gridSize).keys()];
         this.setScreenSize(Math.min(window.innerWidth, window.innerHeight));
         this.positions = [...Array(gridSize * gridSize).keys()];
-        this.gameId = !image ? 'numbers' : md5(this.image);
+        this.gameId = md5((!image ? 'numbers' : image) + ':' + gridSize);
 
         if (autoStart) {
             if (!this.load()) {
@@ -25,14 +26,12 @@ export class Game {
             gridSize: this.gridSize,
             image: this.image,
             imageSize: this.imageSize,
-            bgOffset: this.bgOffset,
             tileSize: this.tileSize,
         }
     }
 
     setScreenSize(size) {
         this.imageSize = size - 20;
-        this.bgOffset = 1 / this.imageSize;
         this.tileSize = this.imageSize / this.gridSize;
         this.publishUpdates();
     }
@@ -100,10 +99,6 @@ export class Game {
             return true;
         }
         return false;
-    }
-
-    clear() {
-        window.localStorage.removeItem(`picpuzz_${this.gameId}`);
     }
 
     reset() {
