@@ -3,11 +3,12 @@ import React, { useMemo } from 'react';
 function Tile({ id, isBlank, image, position, tileSize, gridSize }) {
     // calculate selection of image to display
     const background = useMemo(() => {
+        const bgSize = tileSize * gridSize;
         const bgOffset = 1 / gridSize;
-        const bgX = (id % gridSize) * 500 * bgOffset;
-        const bgY = Math.floor(id / gridSize) * 500 * bgOffset;
-        return `url(${image}) -${bgX}px -${bgY}px / 500px 500px no-repeat`;
-    }, [image, gridSize, id]);
+        const bgX = (id % gridSize) * bgSize * bgOffset;
+        const bgY = Math.floor(id / gridSize) * bgSize * bgOffset;
+        return `url(${image}) -${bgX}px -${bgY}px / ${gridSize * 100}% ${gridSize * 100}% no-repeat`;
+    }, [tileSize, image, gridSize, id]);
 
     // calculate css translate position
     const transform = useMemo(() => {
