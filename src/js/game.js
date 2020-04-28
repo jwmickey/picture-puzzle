@@ -16,7 +16,7 @@ export class Game {
 
         if (autoStart) {
             if (!this.load()) {
-                this.randomize();
+                this.randomize(this.gridSize * 10 + 10);
             }
         }
     }
@@ -103,7 +103,7 @@ export class Game {
 
     reset() {
         this.setPositions([...Array(this.gridSize * this.gridSize).keys()]);
-        setTimeout(() => this.randomize(), 1000);
+        setTimeout(() => this.randomize(this.gridSize * 10 + 10), 1000);
     }
 
     isSolved() {
