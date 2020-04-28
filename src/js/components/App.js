@@ -5,15 +5,25 @@ import Puzzle from './Puzzle';
 import images from '../images';
 import { Game } from '../game';
 
+const CUSTOM_KEY = 'picpuzz_custom_image';
 const GRID_SIZES  = [3, 4, 5, 6, 7, 8];
 const DEFAULT_CONFIG = {
     gridSize: 4,
     image: null
 };
 
+function loadImage() {
+    return window.localStorage.getItem(CUSTOM_KEY);
+}
+
+function saveImage(data) {
+    window.localStorage.setItem(CUSTOM_KEY, data);
+}
+
 function App() {
     const [inProgress, setInProgress] = useState(false);
     const [puzzleConfig, setPuzzleConfig] = useState(DEFAULT_CONFIG);
+    const [customImage, setCustomImage] = useState(loadImage());
     const [game, setGame] = useState(null);
 
     // handle resize events
@@ -27,6 +37,11 @@ function App() {
             window.removeEventListener('resize', resize);
         }
     }, [game]);
+
+    function updateCustomImage(image) {
+        saveImage(image);
+        setCustomImage(image);
+    }
 
     function start(gridSize, preset) {
         setPuzzleConfig({
@@ -53,6 +68,8 @@ function App() {
             <Start images={images}
                    sizes={GRID_SIZES}
                    start={start}
+                   customImage={customImage}
+                   saveCustomImage={updateCustomImage}
                    gridSize={puzzleConfig.gridSize} />
         );
     }

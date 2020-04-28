@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
+import CustomUpload from './CustomUpload';
 
 const numbers = require('../../img/numbers.png').default;
 
-function Start({ gridSize, images, start, sizes }) {
+function Start({ gridSize, images, start, sizes, customImage, saveCustomImage }) {
     const [size, setSize] = useState(gridSize);
     const [imageIndex, setImageIndex] = useState(-1);
+
+    function handleStart() {
+        if (imageIndex === images.length && customImage != null) {
+            start(size, customImage);
+        } else {
+            start(size, images[imageIndex]);
+        }
+    }
 
     return (
         <div className="start">
@@ -30,10 +39,22 @@ function Start({ gridSize, images, start, sizes }) {
                         <img src={img} alt="Preview" />
                     </button>
                 ))}
+                {customImage && (
+                    <button key="custom"
+                            className={imageIndex === images.length ? 'selected' : ''}
+                            onClick={() => setImageIndex(images.length)}>
+                        <img src={customImage} alt="Preview" />
+                    </button>
+                )}
             </div>
 
+            <div className="button-group custom">
+                <CustomUpload current={customImage} save={saveCustomImage} />
+            </div>
+
+
             <div className="button-group">
-                <button onClick={() => start(size, images[imageIndex])}>Start Game</button>
+                <button onClick={handleStart}>Start Game</button>
             </div>
         </div>
     );
