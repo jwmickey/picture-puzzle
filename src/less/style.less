@@ -133,7 +133,13 @@ body {
         text-align: center;
         align-self: center;
         position: relative;
-        transition: transform 75ms ease-in;
+        transition: transform 75ms linear;
+        z-index: 20;
+
+        &:last-child {
+            z-index: 10;
+            box-shadow: none;
+        }
     }
 }
 

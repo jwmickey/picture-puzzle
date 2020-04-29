@@ -23,7 +23,7 @@ function Tile({ id, isBlank, image, position, tileSize, gridSize }) {
 
     return (
         <div style={{
-            background: isBlank ? '#eee' : background,
+            background: isBlank ? '#efefef' : background,
             color: !!image ? 'transparent' : 'black',
             width: tileSize,
             height: tileSize,
