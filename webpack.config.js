@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -20,9 +21,16 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: 'public',
+        to: '',
+        force: true,
+      },
+    ]),
     new HtmlWebpackPlugin({
       title: 'Picture Puzzle',
-      template: 'index.html'
+      template: 'public/index.html'
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
