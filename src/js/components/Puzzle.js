@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useGame from '../hooks/useGame';
+import Background from './Background';
 import Tile from './Tile';
 import Controls from './Controls';
 import Winner from './Winner';
@@ -33,8 +34,8 @@ function Puzzle({ game, onExit }) {
 
     return (
         <div className="puzzle">
-            <div className="squares">
-                {game.isSolved() && <Winner close={onExit} image={image} />}
+            <Background tiles={game.tiles} tileSize={tileSize} />
+            <div className="squares" >
                 {game.tiles.map(id => (
                     <Tile key={id}
                           id={id}
@@ -45,6 +46,7 @@ function Puzzle({ game, onExit }) {
                           isBlank={id === numTiles - 1} />
                 ))}
             </div>
+            {game.isSolved() && <Winner close={onExit} image={image} />}
             <Controls handleMove={d => G.moveInDirection(d)}
                       handleExit={onExit}
                       handleReset={() => G.reset()} />

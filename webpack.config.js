@@ -28,10 +28,6 @@ module.exports = {
         force: true,
       },
     ]),
-    new WorkboxPlugin.GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true
-    }),
     new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {

@@ -81,8 +81,9 @@ body {
 }
 
 .winner {
-    width: 100%;
-    height: 100%;
+    width: @puzzleSize;
+    height: @puzzleSize;
+    margin: 10px;
     background-size: cover;
     position: absolute !important;
     top: 0;
@@ -90,7 +91,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 120;
 
     h1 {
         text-align: center;
@@ -112,6 +113,22 @@ body {
     position: relative;
 }
 
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: @puzzleSize;
+    height: @puzzleSize;
+    display: flex;
+    flex-flow: row wrap;
+    margin: 10px;
+    background-color: #f9f9f9;
+
+    > div {
+        box-shadow: 0 0 10px inset rgba(50,50,50,0.25);
+    }
+}
+
 .squares {
     width: @puzzleSize;
     height: @puzzleSize;
@@ -122,6 +139,7 @@ body {
     position: relative;
 
     > div {
+        box-sizing: border-box;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -133,12 +151,13 @@ body {
         text-align: center;
         align-self: center;
         position: relative;
-        transition: transform 75ms linear;
+        transition: transform 100ms linear;
         z-index: 20;
 
         &:last-child {
             z-index: 10;
             box-shadow: none;
+            border: none;
         }
     }
 }

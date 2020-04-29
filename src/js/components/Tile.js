@@ -3,6 +3,9 @@ import React, { useMemo } from 'react';
 function Tile({ id, isBlank, image, position, tileSize, gridSize }) {
     // calculate selection of image to display
     const background = useMemo(() => {
+        if (!image) {
+            return '#fff';
+        }
         const bgSize = tileSize * gridSize;
         const bgOffset = 1 / gridSize;
         const bgX = (id % gridSize) * bgSize * bgOffset;
@@ -23,7 +26,7 @@ function Tile({ id, isBlank, image, position, tileSize, gridSize }) {
 
     return (
         <div style={{
-            background: isBlank ? '#efefef' : background,
+            background: isBlank ? 'transparent' : background,
             color: !!image ? 'transparent' : 'black',
             width: tileSize,
             height: tileSize,
