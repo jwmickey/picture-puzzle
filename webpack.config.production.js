@@ -1,4 +1,6 @@
 const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin;
@@ -6,9 +8,14 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 module.exports = {
   mode: 'production',
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({ parallel: true })]
+  },
   devtool: 'source-map',
   entry: './src/index',
   output: {
+    filename: 'main.js',
     chunkFilename: '[name].bundle.js'
   },
   resolve: {
@@ -28,6 +35,9 @@ module.exports = {
         force: true,
       },
     ]),
+    new MiniCssExtractPlugin({
+      filename: 'styles.min.css',
+    }),
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
       skipWaiting: true
@@ -51,7 +61,13 @@ module.exports = {
         }
       },{
         test: /\.less$/,
-        loader: 'style-loader!css-loader!less-loader'
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          'css-loader',
+          'less-loader',
+        ],
       },
       {
         test: /\.(png|jpe?g|gif)$/i,

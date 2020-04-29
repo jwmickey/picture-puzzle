@@ -1,8 +1,4 @@
-import { createHash } from 'crypto';
-
-function md5(input) {
-    return createHash('md5').update(input).digest('hex');
-}
+import md5 from 'md5';
 
 export class Game {
     constructor(gridSize, image, autoStart = true) {

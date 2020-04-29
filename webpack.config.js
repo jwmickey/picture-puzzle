@@ -10,7 +10,7 @@ module.exports = {
     index: './src/index.js'
   },
   output: {
-    chunkFilename: '[name].bundle.js'
+    filename: 'main.js',
   },
   devServer: {
     stats: 'errors-only',
