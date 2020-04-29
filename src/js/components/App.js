@@ -28,6 +28,10 @@ function App() {
 
     // handle resize events
     useEffect(() => {
+        if (game == null) {
+            return;
+        }
+
         const resize = debounce(() => {
             game.setScreenSize(Math.min(window.innerWidth, window.innerHeight));
         }, 1000);
