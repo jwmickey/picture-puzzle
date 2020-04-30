@@ -79,8 +79,8 @@ export class Game {
 
     unsubscribe(subscriber) {
         const idx = this.subscribers.findIndex(s => s === subscriber);
-        if (idx !== false) {
-            this.subscribers = this.subscribers.splice(idx, 1);
+        if (idx >= 0) {
+            this.subscribers.splice(idx, 1);
         }
     }
 

@@ -57,3 +57,36 @@ test('moveInDirection', () => {
     expect(g.moveInDirection('down')).toStrictEqual([0,1,2,3,4,5,10,6,8,9,14,7,12,13,15,11]);
     expect(g.moveInDirection('down')).toStrictEqual([0,1,2,3,4,5,10,6,8,9,14,7,12,13,11,15]);
 });
+
+test('add/remove subscriber', () => {
+    const g = new Game(4, 'fake-image.jpg', false);
+    const mockSubscriber = jest.fn(() => {});
+
+    g.subscribe(mockSubscriber);
+    expect(g.subscribers).toContain(mockSubscriber);
+    g.unsubscribe(mockSubscriber);
+    expect(g.subscribers).not.toContain(mockSubscriber);
+});
+
+test('notify subscriber', () => {
+    const g = new Game(4, 'fake-image.jpg', false);
+    let updatedPositions = [];
+    let updatedConfig = {};
+    const mockSubscriber = jest.fn(({ positions, config }) => {
+        updatedPositions = positions;
+        updatedConfig = config;
+    });
+
+    g.subscribe(mockSubscriber);
+    g.publishUpdates();
+    expect(mockSubscriber.mock.calls.length).toBe(1);
+    expect(updatedPositions).toStrictEqual(g.getPositions());
+    expect(updatedConfig).toStrictEqual(g.getConfig());
+});
+
+test('isSolved', () => {
+    const g = new Game(4, 'fake-image.jpg', false);
+    expect(g.isSolved()).toBe(true);
+    g.setPositions([15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0]);
+    expect(g.isSolved()).toBe(false);
+});
