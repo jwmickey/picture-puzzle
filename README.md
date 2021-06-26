@@ -15,19 +15,14 @@ the tile that is free to slide in the direction of the blank space.  I had
 implemented this behavior at first, but found it much more intuitive to "move" the 
 blank square so that the keyboard inputs would not be reversed.
 
-This game is unfortunately not optimized for mobile devices. 
+This game can be installed on your mobile device as a [progressive web app](https://web.dev/progressive-web-apps/)
 
-[PLAY!](https://jwmickey.github.com/picture-puzzle)
+[PLAY!](https://picture-puzzle.netlify.app/)
 -------
 
 TODO:
 -----
 
-1. Allow uploading an image or providing a URL
-2. Write a solver algorithm
+1. Write a solver algorithm ;)
 
-Acknowledgements:
------------------
-
-The preset images used in the puzzle are courtesy of the North Carolina Zoo. 
 
